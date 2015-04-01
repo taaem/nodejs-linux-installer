@@ -16,9 +16,9 @@ then
 
 	VER=$(grep -o 'node-v.*-linux-x64.tar.gz' node-cache.txt)
 else
-	grep -o '>node-v.*-linux-x64.tar.gz' node-updater.html > node-cache.txt 2>&1
+	grep -o '>node-v.*-linux-x86.tar.gz' node-updater.html > node-cache.txt 2>&1
 	
-	VER=$(grep -o 'node-v.*-linux-x64.tar.gz' node-cache.txt)
+	VER=$(grep -o 'node-v.*-linux-x86.tar.gz' node-cache.txt)
 fi
 rm ./node-cache.txt
 rm ./node-updater.html
