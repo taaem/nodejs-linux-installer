@@ -8,9 +8,9 @@ echo "Get Latest Version Number..."
 {
 wget --output-document=node-updater.html https://nodejs.org/dist/latest/
 
-ARCH=uname -m
+ARCH=$(uname -m)
 
-if [$ARCH = x86_64]
+if [ $ARCH = x86_64 ]
 then
 	grep -o '>node-v.*-linux-x64.tar.gz' node-updater.html > node-cache.txt 2>&1
 
