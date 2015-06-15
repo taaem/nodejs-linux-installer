@@ -26,11 +26,11 @@ rm ./iojs-updater.html
 
 echo "Done"
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname $0 )" && pwd )
 
 echo "Downloading latest stable Version $VER..."
 {
-wget https://iojs.org/dist/latest/$VER
+wget https://iojs.org/dist/latest/$VER -O $DIR/$VER
 } &> /dev/null
 
 echo "Done"
