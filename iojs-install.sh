@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Node Linux Installer by www.github.com/taaem"
+echo "IoJS Linux Installer by www.github.com/taaem"
 echo "Need Root for installing iojs"
 sudo sh -c 'echo "Got Root!"' 
 
