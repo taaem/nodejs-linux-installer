@@ -10,7 +10,22 @@ wget --output-document=node-updater.html https://nodejs.org/dist/latest/
 
 ARCH=$(uname -m)
 
-if [ $ARCH = x86_64 ]
+if [ $ARCH = arm64 ]
+then
+        grep -o '>node-v.*-linux-arm64.tar.gz' node-updater.html > node-cache.txt 2>&1
+
+        VER=$(grep -o 'node-v.*-linux-arm64.tar.gz' node-cache.txt)
+elif [ $ARCH = armv6l ]
+then
+        grep -o '>node-v.*-linux-armv6l.tar.gz' node-updater.html > node-cache.txt 2>&1
+
+        VER=$(grep -o 'node-v.*-linux-armv6l.tar.gz' node-cache.txt)
+elif [ $ARCH = armv7l ]
+then
+        grep -o '>node-v.*-linux-armv7l.tar.gz' node-updater.html > node-cache.txt 2>&1
+
+        VER=$(grep -o 'node-v.*-linux-armv7l.tar.gz' node-cache.txt)
+elif [ $ARCH = x86_64 ]
 then
 	grep -o '>node-v.*-linux-x64.tar.gz' node-updater.html > node-cache.txt 2>&1
 
