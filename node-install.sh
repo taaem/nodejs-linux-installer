@@ -6,7 +6,7 @@ sudo sh -c 'echo "Got Root!"'
 
 echo "Get Latest Version Number..."
 
-node_latest=$(curl https://nodejs.org/dist/latest/ 2>/dev/null)
+node_latest=$(curl http://nodejs.org/dist/latest/ 2>/dev/null)
 if [[ ! $node_latest ]]
     then
         echo "ERROR: No Internet Connection" >&2
@@ -44,7 +44,7 @@ echo "Done"
 
 echo "Downloading latest stable Version $VER..."
 
-URL=https://nodejs.org/dist/latest/$VER
+URL=http://nodejs.org/dist/latest/$VER
 FILE_PATH=/tmp/node.tar.gz
 
 curl -o $FILE_PATH $URL 2>/dev/null
