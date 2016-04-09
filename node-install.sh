@@ -1,8 +1,12 @@
 #!/bin/bash
 
 echo "Node Linux Installer by www.github.com/taaem"
-echo "Need Root for installing NodeJS"
-sudo sh -c 'echo "Got Root!"' 
+if [[ $EUID -ne 0 ]]; then
+    echo "Need Root for installing NodeJS"
+    sudo sh -c 'echo "Got Root!"' 
+else
+    echo "Running as Root User"
+fi
 
 echo "Get Latest Version Number..."
 
