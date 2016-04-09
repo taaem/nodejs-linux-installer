@@ -5,54 +5,68 @@ echo "Need Root for installing NodeJS"
 sudo sh -c 'echo "Got Root!"' 
 
 echo "Get Latest Version Number..."
-{
-wget --output-document=node-updater.html https://nodejs.org/dist/latest/
+
+node_latest=$(curl https://nodejs.org/dist/latest/ 2>/dev/null)
+if [[ ! $node_latest ]]
+    then
+        echo "ERROR: No Internet Connection" >&2
+        exit 1
+fi
 
 ARCH=$(uname -m)
 
 if [ $ARCH = arm64 ]
-then
-        grep -o '>node-v.*-linux-arm64.tar.gz' node-updater.html > node-cache.txt 2>&1
+    then
+        NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-arm64.tar.gz' )
+        VER=$(echo "$NAME" | grep -o 'node-v.*-linux-arm64.tar.gz') 
 
-        VER=$(grep -o 'node-v.*-linux-arm64.tar.gz' node-cache.txt)
-elif [ $ARCH = armv6l ]
-then
-        grep -o '>node-v.*-linux-armv6l.tar.gz' node-updater.html > node-cache.txt 2>&1
+    elif [ $ARCH = armv6l ]
+    then
+        NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-armv6l.tar.gz' )
+        VER=$(echo "$NAME" | grep -o 'node-v.*-linux-armv6l.tar.gz') 
 
-        VER=$(grep -o 'node-v.*-linux-armv6l.tar.gz' node-cache.txt)
-elif [ $ARCH = armv7l ]
-then
-        grep -o '>node-v.*-linux-armv7l.tar.gz' node-updater.html > node-cache.txt 2>&1
+    elif [ $ARCH = armv7l ]
+    then
+        NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-armv7l.tar.gz' )
+        VER=$(echo "$NAME" | grep -o 'node-v.*-linux-armv7l.tar.gz') 
+        
+    elif [ $ARCH = x86_64 ]
+    then
+        NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-x64.tar.gz' )
+        VER=$(echo "$NAME" | grep -o 'node-v.*-linux-x64.tar.gz') 
 
-        VER=$(grep -o 'node-v.*-linux-armv7l.tar.gz' node-cache.txt)
-elif [ $ARCH = x86_64 ]
-then
-	grep -o '>node-v.*-linux-x64.tar.gz' node-updater.html > node-cache.txt 2>&1
-
-	VER=$(grep -o 'node-v.*-linux-x64.tar.gz' node-cache.txt)
-else
-	grep -o '>node-v.*-linux-x86.tar.gz' node-updater.html > node-cache.txt 2>&1
-	
-	VER=$(grep -o 'node-v.*-linux-x86.tar.gz' node-cache.txt)
+    else
+        NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-x86.tar.gz' )
+        VER=$(echo "$NAME" | grep -o 'node-v.*-linux-x86.tar.gz') 
 fi
-rm ./node-cache.txt
-rm ./node-updater.html
-} &> /dev/null
 
 echo "Done"
 
-DIR=$( cd "$( dirname $0 )" && pwd )
-
 echo "Downloading latest stable Version $VER..."
-{
-wget https://nodejs.org/dist/latest/$VER -O $DIR/$VER
-} &> /dev/null
+
+URL=https://nodejs.org/dist/latest/$VER
+FILE_PATH=/tmp/node.tar.gz
+
+curl -o $FILE_PATH $URL 2>/dev/null
+exit_status=$(echo "$?")
+if [[ $exit_status -ne "0" ]]
+    then
+        echo "ERROR: Target tar not found"
+        exit $exit_status
+fi
 
 echo "Done"
 
 echo "Installing..."
-cd /usr/local && sudo tar --strip-components 1 -xzf $DIR/$VER
+cd /usr/local && sudo tar --strip-components 1 -xzf /tmp/node.tar.gz
+exit_status=$(echo "$?")
+if [[ $exit_status -ne "0" ]]
+    then
+        echo "ERROR: Couldn't extract tar"
+        exit $exit_status
+fi
 
-rm $DIR/$VER
+rm $FILE_PATH
 
 echo "Finished installing!"
+exit 0
