@@ -19,7 +19,7 @@ fi
 
 ARCH=$(uname -m)
 
-if [ $ARCH = arm64 ]
+if [ $ARCH = arm64 ] || [ $ARCH = aarch64 ]
     then
         NAME=$(echo "$node_latest" | grep -o '>node-v.*-linux-arm64.tar.gz' )
         VER=$(echo "$NAME" | grep -o 'node-v.*-linux-arm64.tar.gz') 
