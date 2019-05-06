@@ -10,7 +10,7 @@ fi
 
 echo "Get LTS Version Number..."
 
-node_latest=$(curl http://nodejs.org/dist/latest-carbon/ 2>/dev/null)
+node_latest=$(curl http://nodejs.org/dist/latest-dubnium/ 2>/dev/null)
 if [[ ! $node_latest ]]
     then
         echo "ERROR: No Internet Connection" >&2
@@ -48,7 +48,7 @@ echo "Done"
 
 echo "Downloading LTS Version $VER..."
 
-URL=http://nodejs.org/dist/latest-carbon/$VER
+URL=http://nodejs.org/dist/latest-dubnium/$VER
 FILE_PATH=/tmp/node.tar.gz
 
 curl -o $FILE_PATH $URL 2>/dev/null
